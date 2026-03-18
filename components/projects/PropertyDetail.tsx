@@ -2,12 +2,9 @@
 import { useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import gsap from 'gsap'
-import { Flip } from 'gsap/Flip'
 import { properties } from '@/lib/properties'
 
 const FloorplanViewer = dynamic(() => import('./FloorplanViewer'), { ssr: false })
-
-gsap.registerPlugin(Flip)
 
 export default function PropertyDetail({
   propertyId,
