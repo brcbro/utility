@@ -3,11 +3,11 @@ import { useEffect, useRef, ReactNode } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const TOTAL_FRAMES = 168
+const TOTAL_FRAMES = 192
 
 function getFrameUrl(index: number) {
   const padded = String(index + 1).padStart(3, '0')
-  return `/frames/ezgif-frame-${padded}.jpg`
+  return `/frames/frame${padded}.jpeg`
 }
 
 interface Props {
@@ -72,8 +72,9 @@ export default function ScrollSequence({ heroContent, whoWeAreContent }: Props) 
           drawFrame(frame)
         }
 
-        // Fire card entrance animation precisely when the 143rd frame (index 142) appears
-        if (!animTriggeredRef.current && frame >= 142) {
+        // Fire card entrance animation precisely when the frame appears
+        // Original was at index 142 of 168 (85%). For 192 frames, that's index 163.
+        if (!animTriggeredRef.current && frame >= 163) {
           animTriggeredRef.current = true
           window.dispatchEvent(new Event('who-we-are-enter'))
         }

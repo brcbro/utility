@@ -103,7 +103,7 @@ export default function BlogSection() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div style={{ width: 24, height: 1, background: 'var(--gold)' }} />
-              <span style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)' }}>Insights</span>
+              <span style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)' }}>Business Setup</span>
             </div>
             <h2 style={{
               fontFamily: 'var(--font-display)',

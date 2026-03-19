@@ -2,7 +2,12 @@
 import { useEffect, useRef, useState } from 'react'
 import Magnetic from '@/components/ui/Magnetic'
 
-const links = ['About Us', 'Business Setup', 'Countries', 'Support']
+const links = [
+  { name: 'About Us', href: '#about-us' },
+  { name: 'Business Setup', href: '#business-setup' },
+  { name: 'Countries', href: '#countries' },
+  { name: 'Support', href: '#support' }
+]
 
 export default function Navbar() {
   const [visible, setVisible] = useState(true)
@@ -94,9 +99,9 @@ export default function Navbar() {
           {/* Desktop Links */}
           <ul className="hidden md:flex gap-8 list-none m-0 p-0">
             {links.map(link => (
-              <li key={link}>
+              <li key={link.name}>
                 <a
-                  href="#"
+                  href={link.href}
                   className="hoverable"
                   style={{
                     fontSize: '0.65rem',
@@ -108,8 +113,12 @@ export default function Navbar() {
                   }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'var(--gold)')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(244, 239, 230, 0.85)')}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  {link}
+                  {link.name}
                 </a>
               </li>
             ))}
@@ -120,6 +129,9 @@ export default function Navbar() {
             <Magnetic>
               <button
                 className="hoverable"
+                onClick={() => {
+                  document.querySelector('#support')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 style={{
                   padding: '9px 22px',
                   fontSize: '0.6rem',
@@ -153,28 +165,29 @@ export default function Navbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className="md:hidden flex flex-col gap-1.5 cursor-pointer bg-transparent border-none p-1"
+            className="md:hidden flex flex-col gap-1.5 cursor-pointer bg-transparent border-none p-2"
             onClick={() => setMenuOpen(prev => !prev)}
             aria-label="Toggle menu"
-            style={{ outline: 'none' }}
+            style={{ outline: 'none', position: 'relative', zIndex: 101 }}
           >
             {[0, 1, 2].map(i => (
               <span
                 key={i}
                 style={{
                   display: 'block',
-                  width: 20,
-                  height: 1.5,
+                  width: 24,
+                  height: 2,
                   background: 'var(--cream)',
-                  transition: 'all 0.3s',
+                  borderRadius: 1,
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   transformOrigin: 'center',
                   transform:
                     menuOpen && i === 0
-                      ? 'translateY(4.5px) rotate(45deg)'
+                      ? 'translateY(8px) rotate(45deg)'
                       : menuOpen && i === 1
                       ? 'scaleX(0)'
                       : menuOpen && i === 2
-                      ? 'translateY(-4.5px) rotate(-45deg)'
+                      ? 'translateY(-8px) rotate(-45deg)'
                       : 'none',
                   opacity: menuOpen && i === 1 ? 0 : 1,
                 }}
@@ -184,71 +197,94 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile dropdown — separate from pill, full-width */}
+      {/* Mobile dropdown — Fullscreen overlay for better feel */}
       <div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
+          bottom: 0,
           zIndex: 99,
-          transition: 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-          transform: visible ? 'translateY(0)' : 'translateY(-110%)',
+          background: 'rgba(14, 12, 10, 0.98)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          opacity: menuOpen ? 1 : 0,
+          pointerEvents: menuOpen ? 'auto' : 'none',
+          transform: menuOpen ? 'translateY(0)' : 'translateY(-10%)',
         }}
         className="md:hidden"
       >
-        <div
-          style={{
-            overflow: 'hidden',
-            maxHeight: menuOpen ? '300px' : '0',
-            transition: 'max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-            background: 'rgba(14, 12, 10, 0.95)',
-            backdropFilter: 'blur(24px)',
-            borderBottom: '1px solid rgba(59,130,246,0.12)',
-            paddingTop: menuOpen ? 84 : 0,
-          }}
-        >
-          <ul className="list-none m-0 py-6 px-8 flex flex-col gap-5">
-            {links.map(link => (
-              <li key={link}>
-                <a
-                  href="#"
-                  style={{
-                    fontSize: '0.8rem',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(244,239,230,0.7)',
-                    textDecoration: 'none',
-                    transition: 'color 0.25s',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--gold)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(244,239,230,0.7)')}
-                >
-                  {link}
-                </a>
-              </li>
-            ))}
-            <li>
-              <button
+        <ul className="list-none m-0 p-0 flex flex-col items-center gap-10">
+          {links.map((link, i) => (
+            <li 
+              key={link.name}
+              style={{
+                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                transitionDelay: menuOpen ? `${i * 0.1}s` : '0s',
+                opacity: menuOpen ? 1 : 0,
+                transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
+              }}
+            >
+              <a
+                href={link.href}
                 style={{
-                  marginTop: 8,
-                  padding: '10px 24px',
-                  borderRadius: 999,
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.2em',
+                  fontSize: '1.2rem',
+                  letterSpacing: '0.25em',
                   textTransform: 'uppercase',
-                  color: 'var(--gold)',
-                  border: '1px solid rgba(59,130,246,0.4)',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
+                  color: 'var(--cream)',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 300,
+                  transition: 'color 0.3s',
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Apply Now
-              </button>
+                {link.name}
+              </a>
             </li>
-          </ul>
-        </div>
+          ))}
+          <li
+            style={{
+              marginTop: 20,
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              transitionDelay: menuOpen ? `${links.length * 0.1}s` : '0s',
+              opacity: menuOpen ? 1 : 0,
+              transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
+            }}
+          >
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                document.querySelector('#support')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              style={{
+                padding: '16px 40px',
+                borderRadius: 999,
+                fontSize: '0.8rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: '#fff',
+                border: '1px solid var(--gold)',
+                background: 'var(--gold)',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                boxShadow: '0 10px 30px rgba(184, 154, 88, 0.3)',
+              }}
+            >
+              Apply Now
+            </button>
+          </li>
+        </ul>
       </div>
     </>
   )

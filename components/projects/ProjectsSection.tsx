@@ -296,7 +296,7 @@ export default function ProjectsSection({ onOpenProperty }: { onOpenProperty: (i
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div style={{ width: 24, height: 1, background: 'var(--gold)' }} />
-              <span style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)' }}>Markets We Serve</span>
+              <span style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)' }}>Countries</span>
             </div>
             <h2 style={{
               fontFamily: 'var(--font-display)',

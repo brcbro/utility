@@ -26,11 +26,21 @@ export default function Home() {
         whoWeAreContent={<WhoWeAreSection />}
       />
 
-      <ProjectsSection onOpenProperty={(id) => setOpenProperty(id)} />
-      <LeadershipSection />
-      <BlogSection />
-      <TestimonialsSection />
-      <ContactSection />
+      <div id="countries">
+        <ProjectsSection onOpenProperty={(id) => setOpenProperty(id)} />
+      </div>
+      <div id="about-us">
+        <LeadershipSection />
+      </div>
+      <div id="business-setup">
+        <BlogSection />
+      </div>
+      <div id="tutorials">
+        <TestimonialsSection />
+      </div>
+      <div id="support">
+        <ContactSection />
+      </div>
       <Footer />
 
       {openProperty && (
